@@ -28,7 +28,7 @@ export class OrganizationListComponent implements OnInit, OnDestroy {
       );
     
     this.organizations = this.organizationService.getOrganizations();
-
+   
   }
 
   onNewOrganization() {

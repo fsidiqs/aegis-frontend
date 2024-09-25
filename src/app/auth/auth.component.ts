@@ -33,12 +33,10 @@ export class AuthComponent {
       if (this.isLoginMode) {
          this.authService.login(email, password).subscribe(
             (resData) => {
-               console.log(resData);
                this.isLoading = false;
                this.router.navigate(["/users"]);
             },
             (errorMessage) => {
-               console.log(errorMessage);
                this.error = errorMessage;
                this.isLoading = false;
             }

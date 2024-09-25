@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 
-import { Ingredient } from '../shared/ingredient.model';
 import { Organization } from './organization.model';
 
 @Injectable()
@@ -34,10 +33,6 @@ export class OrganizationService {
   }
 
   getOrganizations() {
-    // aspiron debugger
-    console.log('aspiron get organizations debugger');
-    console.log(this.organizations.slice());
-    // aspiron debugger
     return this.organizations.slice();
   }
 

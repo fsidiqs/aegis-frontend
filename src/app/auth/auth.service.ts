@@ -78,10 +78,6 @@ export class AuthService {
          .pipe(
             catchError(this.handleError),
             tap((resData) => {
-               // aspiron debugger
-               console.log("aspiron login debugger");
-               console.log(resData.data);
-               // aspiron debugger
                this.handleAuthentication(
                   resData.data.auth_token
                   // resData.email,
@@ -153,8 +149,6 @@ export class AuthService {
       token: string
       // expiresIn: number
    ) {
-      console.log("debug handleAuthentication token");
-      console.log(token);
       const expirationDate = new Date(
          new Date().getTime() + 7 * 24 * 60 * 60 * 1000
       );
@@ -167,8 +161,6 @@ export class AuthService {
          token,
          expirationDate
       );
-      console.log("debug handleAuthentication");
-      console.log(user);
       this.user.next(user);
       // this.autoLogout(expiresIn * 1000);
       localStorage.setItem("userData", JSON.stringify(user));

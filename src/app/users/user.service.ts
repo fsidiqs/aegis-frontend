@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 
-import { Ingredient } from '../shared/ingredient.model';
 import { User, UserCreate } from '../auth/user.model';
 
 @Injectable()
@@ -34,10 +33,6 @@ export class UserService {
   }
 
   getUsers() {
-    // aspiron debugger
-    console.log('aspiron get users debugger');
-    console.log(this.users.slice());
-    // aspiron debugger
     return this.users.slice();
   }
 

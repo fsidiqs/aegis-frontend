@@ -11,7 +11,7 @@ import { OrganizationService } from "../organizations/organization.service";
 export interface OrganizationResponseData {
    data: {
       id: string;
-      creatorID: string;
+      creator_id: string;
       name: string;
       description: string;
    }[];
@@ -46,7 +46,6 @@ export class DataStorageService {
             users
          )
          .subscribe((response) => {
-            console.log(response);
          });
    }
 
@@ -137,13 +136,15 @@ export class DataStorageService {
                return organization.data.map((organization) => {
                   return new Organization(
                      organization.id,
-                     organization.creatorID,
                      organization.name,
-                     organization.description
+                     organization.description,
+                     organization.creator_id
                   );
                });
             }),
             tap((organization) => {
+               console.log("testing")
+               console.log(organization)
                this.organizationService.setOrganizations(organization);
             })
          );

@@ -64,7 +64,6 @@ export class OrganizationEditComponent implements OnInit {
    }
 
    private initForm() {
-      let organizationID = "";
       let organizationName = "";
       let organizationDescription = "";
 

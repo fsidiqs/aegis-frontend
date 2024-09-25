@@ -27,10 +27,6 @@ export class AuthGuard implements CanActivate {
       take(1),
       map(user => {
         const isAuth = !!user;
-        // aspiron debugger
-        console.log('aspiron debugger');
-        console.log(user);
-        // aspiron debugger
         if (isAuth) {
           return true;
         }
