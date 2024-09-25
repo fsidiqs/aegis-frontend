@@ -1,6 +1,5 @@
 <div class="row">
    <div class="col-xs-12">
-    
       <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
          <div class="row">
             <div class="col-xs-12">
@@ -36,14 +35,34 @@
          <div class="row">
             <div class="col-xs-12">
                <div class="form-group">
-                  <label for="description">Description</label>
-                  <textarea
+                  <label for="email">Email</label>
+                  <input
                      type="text"
-                     id="description"
+                     id="email"
+                     formControlName="email"
                      class="form-control"
-                     formControlName="description"
-                     rows="6"
-                  ></textarea>
+                  />
+               </div>
+            </div>
+         </div>
+         <div class="form-group" *ngIf="!editMode">
+            <label for="password">Password</label>
+            <input type="password" id="password" class="form-control" formControlName="password" required/>
+         </div>
+         <div class="row">
+            <div class="col-xs-12">
+               <div class="form-group">
+                  <label for="role">Role</label>
+                  <select
+                     id="role"
+                     class="form-control"
+                     formControlName="role"
+                     name="role"
+                     required
+                  >
+                     <option value="superadmin">Superadmin</option>
+                     <option value="user">User</option>
+                  </select>
                </div>
             </div>
          </div>

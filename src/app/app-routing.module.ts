@@ -7,6 +7,7 @@ import { UsersComponent } from "./users/users.component";
 import { UserEditComponent } from "./users/user-edit/user-edit.component";
 import { UserDetailComponent } from "./users/user-detail/user-detail.component";
 import { UsersResolverService } from "./users/users-resolver.service";
+import { UserStartComponent } from "./users/user-start/user-start.component";
 
 const routes: Routes = [
    { path: "", redirectTo: "/users", pathMatch: "full" },
@@ -15,7 +16,7 @@ const routes: Routes = [
       component: UsersComponent,
       canActivate: [AuthGuard],
       children: [
-         // { path: "", component: RecipeStartComponent },
+         // { path: "", component: UserStartComponent },
          { path: "new", component: UserEditComponent },
          {
             path: ":id",

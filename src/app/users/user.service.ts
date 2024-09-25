@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 
 import { Ingredient } from '../shared/ingredient.model';
-import { User } from '../auth/user.model';
+import { User, UserCreate } from '../auth/user.model';
 
 @Injectable()
 export class UserService {
@@ -24,7 +24,9 @@ export class UserService {
   // ];
   private users: User[] = [];
 
-  constructor() {}
+  constructor() {
+
+  }
 
   setUsers(users: User[]) {
     this.users = users;
@@ -47,8 +49,9 @@ export class UserService {
   //   this.slService.addIngredients(ingredients);
   // }
 
-  addUser(user: User) {
-    this.users.push(user);
+  addUser(user: UserCreate) {
+    // this.users.push(user);
+    // this.dataStorageService.postUser(user.email, user.name, user.role, user.password).subscribe();
     this.usersChanged.next(this.users.slice());
   }
 

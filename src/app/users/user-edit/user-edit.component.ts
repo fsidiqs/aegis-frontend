@@ -3,6 +3,8 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { FormGroup, FormControl, FormArray, Validators, ReactiveFormsModule } from '@angular/forms';
 
 import { UserService } from '../user.service';
+import { DataStorageService } from 'src/app/shared/data-storage.service';
+import { UserCreate } from 'src/app/auth/user.model';
 
 @Component({
   selector: 'app-user-edit',
@@ -17,6 +19,7 @@ export class UserEditComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private userService: UserService,
+    private dataStorageService: DataStorageService,
     private router: Router
   ) {}
 
@@ -29,15 +32,16 @@ export class UserEditComponent implements OnInit {
   }
 
   onSubmit() {
-    // const newUser = new User(
-    //   this.userForm.value['name'],
-    //   this.userForm.value['description'],
-    //   this.userForm.value['imagePath'],
-    //   this.userForm.value['ingredients']);
+    const newUser = new UserCreate(
+      this.userForm.value['email'],
+      this.userForm.value['name'],
+      this.userForm.value['role'],
+      this.userForm.value['password']);
     if (this.editMode) {
       this.userService.updateUser(this.id, this.userForm.value);
     } else {
-      this.userService.addUser(this.userForm.value);
+     
+      this.dataStorageService.postUser(newUser.email, newUser.name, newUser.role, newUser.password);
     }
     this.onCancel();
   }
@@ -66,13 +70,14 @@ export class UserEditComponent implements OnInit {
     let userName = '';
     let userEmail = '';
     let userRole = '';
-    let userIngredients = new FormArray<FormGroup<{ name: FormControl<string | null>; amount: FormControl<number | null> }>>([]);
+    let userPassword = '';
 
     if (this.editMode) {
       const user = this.userService.getUser(this.id);
       userName = user.name;
       userEmail = user.email;
       userRole = user.role;
+      
       // if (user['ingredients']) {
       //   for (let ingredient of user.ingredients) {
       //     userIngredients.push(
@@ -92,11 +97,12 @@ export class UserEditComponent implements OnInit {
       name: new FormControl(userName, Validators.required),
       email: new FormControl(userEmail, Validators.required),
       role: new FormControl(userRole, Validators.required),
+      password: new FormControl(userPassword, Validators.required),
       // ingredients: userIngredients
     });
   }
 
-  get ingredientControls() {
-    return (this.userForm.get('ingredients') as FormArray).controls;
-  }
+  // get ingredientControls() {
+  //   return (this.userForm.get('ingredients') as FormArray).controls;
+  // }
 }

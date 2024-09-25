@@ -1,3 +1,11 @@
+export class UserCreate {
+   constructor(
+      public email: string,
+      public name: string,
+      public role: string,
+      public password: string
+   ) {}
+}
 export class User {
    // public email: string;
    // public id: string;

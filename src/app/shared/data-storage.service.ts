@@ -37,6 +37,19 @@ export class DataStorageService {
          });
    }
 
+   postUser(email: string, name: string, role: string, password: string) {
+      return this.http
+         .post<UserResponseData>("http://localhost:8080/consumer/v1/user", {
+            email: email,
+            name: name,
+            role: role,
+            password: password,
+         })
+         .subscribe(() => {
+            this.fetchUsers().subscribe();
+         });
+   }
+
    fetchUsers() {
       return this.http
          .get<UserResponseData>("http://localhost:8080/consumer/v1/users")
@@ -58,7 +71,6 @@ export class DataStorageService {
             })
          );
 
-         
       // return this.http
       //   .get<User[]>(
       //     'https://ng-course-user-book-65f10.firebaseio.com/users.json'

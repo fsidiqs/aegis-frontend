@@ -5,11 +5,11 @@ import { Observable } from "rxjs";
 import { AuthResponseData } from "src/app/auth/auth.service";
 
 @Component({
-   selector: "app-recipe-start",
-   templateUrl: "./recipe-start.component.html",
-   styleUrls: ["./recipe-start.component.css"],
+   selector: "app-user-start",
+   templateUrl: "./user-start.component.html",
+   styleUrls: ["./user-start.component.css"],
 })
-export class RecipeStartComponent implements OnInit {
+export class UserStartComponent implements OnInit {
    isLoading = false;
 
    constructor() {}
