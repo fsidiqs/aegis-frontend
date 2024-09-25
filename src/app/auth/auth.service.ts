@@ -1,17 +1,33 @@
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { BehaviorSubject, catchError, delay, of, Subject, tap, throwError, timeout } from "rxjs";
+import {
+   BehaviorSubject,
+   catchError,
+   delay,
+   of,
+   Subject,
+   tap,
+   throwError,
+   timeout,
+} from "rxjs";
 import { User } from "./user.model";
 import { Router } from "@angular/router";
 
 export interface AuthResponseData {
-   kind: string;
-   idToken: string;
-   email: string;
-   refreshToken: string;
-   expiresIn: string;
-   localId: string;
-   registered?: boolean;
+   // kind: string;
+   // idToken: string;
+   // email: string;
+   // refreshToken: string;
+   // expiresIn: string;
+   // localId: string;
+   // registered?: boolean;
+   data: {
+      auth_token: string;
+      // email: string;
+      // localId: string;
+      // idToken: string;
+      // expiresIn: string;
+   };
 }
 
 @Injectable({ providedIn: "root" })
@@ -21,34 +37,32 @@ export class AuthService {
 
    constructor(private http: HttpClient, private router: Router) {}
    signup(email: string, password: string) {
-    //   return this.http
-    //      .post<AuthResponseData>("http://localhost:3000/api/user/signup", {
-    //         email: email,
-    //         password: password,
-    //      })
-    //      .pipe(
-    //         catchError(this.handleError),
-    //         tap((resData) => {
-    //            this.handleAuthentication(
-    //               resData.email,
-    //               resData.localId,
-    //               resData.idToken,
-    //               +resData.expiresIn
-    //            );
-    //         })
-    //      );
-
-      const mockResponse: AuthResponseData = {
-         kind: "identitytoolkit#SignupNewUserResponse",
-         idToken: "mock-id-token",
-         email: email,
-         refreshToken: "mock-refresh-token",
-         expiresIn: "3600",
-         localId: "mock-local-id",
-      };
-
+      //   return this.http
+      //      .post<AuthResponseData>("http://localhost:3000/api/user/signup", {
+      //         email: email,
+      //         password: password,
+      //      })
+      //      .pipe(
+      //         catchError(this.handleError),
+      //         tap((resData) => {
+      //            this.handleAuthentication(
+      //               resData.email,
+      //               resData.localId,
+      //               resData.idToken,
+      //               +resData.expiresIn
+      //            );
+      //         })
+      //      );
+      // const mockResponse: AuthResponseData = {
+      //    kind: "identitytoolkit#SignupNewUserResponse",
+      //    idToken: "mock-id-token",
+      //    email: email,
+      //    refreshToken: "mock-refresh-token",
+      //    expiresIn: "3600",
+      //    localId: "mock-local-id",
+      // };
       // Return the hardcoded response as an observable using of()
-      return of(mockResponse).pipe(delay(2000));
+      // return of(mockResponse).pipe(delay(2000));
    }
 
    login(email: string, password: string) {
@@ -58,45 +72,43 @@ export class AuthService {
             {
                email: email,
                password: password,
-            //    returnSecureToken: true,
+               //    returnSecureToken: true,
             }
          )
          .pipe(
             catchError(this.handleError),
             tap((resData) => {
-                // aspiron debugger
-                console.log('aspiron debugger');    
-                console.log(resData);
-                // aspiron debugger
+               // aspiron debugger
+               console.log("aspiron login debugger");
+               console.log(resData.data);
+               // aspiron debugger
                this.handleAuthentication(
-                  resData.email,
-                  resData.localId,
-                  resData.idToken,
-                  +resData.expiresIn
+                  resData.data.auth_token
+                  // resData.email,
+                  // resData.localId,
+                  // resData.idToken,
+                  // +resData.expiresIn
                );
             })
          );
 
-    const mockResponse: AuthResponseData = {
-        kind: "identitytoolkit#SignupNewUserResponse",
-        idToken: "mock-id-token",
-        email: email,
-        refreshToken: "mock-refresh-token",
-        expiresIn: "3600",
-        localId: "mock-local-id",
-     };
+      // const mockResponse: AuthResponseData = {
+      //    kind: "identitytoolkit#SignupNewUserResponse",
+      //    idToken: "mock-id-token",
+      //    email: email,
+      //    refreshToken: "mock-refresh-token",
+      //    expiresIn: "3600",
+      //    localId: "mock-local-id",
+      // };
 
-     // Return the hardcoded response as an observable using of()
-     return of(mockResponse).pipe(delay(2000));
+      // Return the hardcoded response as an observable using of()
+      // return of(mockResponse).pipe(delay(2000));
    }
 
    autoLogin() {
-      const userData: {
-         email: string;
-         id: string;
-         _token: string;
-         _tokenExpirationDate: string;
-      } = JSON.parse(localStorage.getItem("userData") || '{}');
+      const userData: User = JSON.parse(
+         localStorage.getItem("userData") || "{}"
+      );
       if (!userData) {
          return;
       }
@@ -104,14 +116,16 @@ export class AuthService {
       const loadedUser = new User(
          userData.email,
          userData.id,
-         userData._token,
-         new Date(userData._tokenExpirationDate)
+         userData.name,
+         userData.role,
+         userData.token,
+         new Date(userData.tokenExpirationDate)
       );
 
       if (loadedUser.token) {
          this.user.next(loadedUser);
          const expirationDuration =
-            new Date(userData._tokenExpirationDate).getTime() -
+            new Date(userData.tokenExpirationDate).getTime() -
             new Date().getTime();
          this.autoLogout(expirationDuration);
       }
@@ -134,13 +148,27 @@ export class AuthService {
    }
 
    private handleAuthentication(
-      email: string,
-      userId: string,
-      token: string,
-      expiresIn: number
+      // email: string,
+      // userId: string,
+      token: string
+      // expiresIn: number
    ) {
-      const expirationDate = new Date(new Date().getTime() + expiresIn * 1000);
-      const user = new User(email, userId, token, expirationDate);
+      console.log("debug handleAuthentication token");
+      console.log(token);
+      const expirationDate = new Date(
+         new Date().getTime() + 7 * 24 * 60 * 60 * 1000
+      );
+      // const user = new User(email, userId, token, expirationDate);
+      const user = new User(
+         "email",
+         "userId",
+         "user",
+         "a user",
+         token,
+         expirationDate
+      );
+      console.log("debug handleAuthentication");
+      console.log(user);
       this.user.next(user);
       // this.autoLogout(expiresIn * 1000);
       localStorage.setItem("userData", JSON.stringify(user));

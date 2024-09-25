@@ -22,11 +22,11 @@ const routes: Routes = [
             component: UserDetailComponent,
             resolve: [UsersResolverService],
          },
-         // {
-         //    path: ":id/edit",
-         //    component: RecipeEditComponent,
-         //    resolve: [RecipesResolverService],
-         // },
+         {
+            path: ":id/edit",
+            component: UserEditComponent,
+            resolve: [UsersResolverService],
+         },
       ],
    },
    // { path: "shopping-list", component: ShoppingListComponent },

@@ -6,6 +6,17 @@ import { UserService } from "../users/user.service";
 import { AuthService } from "../auth/auth.service";
 import { User } from "../auth/user.model";
 
+export interface UserResponseData {
+   data: {
+      email: string;
+      id: string;
+      role: string;
+      name: string;
+      token: string;
+      tokenExpirationDate: string;
+   }[];
+}
+
 @Injectable({ providedIn: "root" })
 export class DataStorageService {
    constructor(
@@ -27,15 +38,27 @@ export class DataStorageService {
    }
 
    fetchUsers() {
-      return this.authService.user.pipe(
-         take(1),
-         exhaustMap((user) => {
-            return this.http.get<User[]>(
-               "https://ng-course-user-book-65f10.firebaseio.com/users.json",
-            );
-         })
-      );
+      return this.http
+         .get<UserResponseData>("http://localhost:8080/consumer/v1/users")
+         .pipe(
+            map((user) => {
+               return user.data.map((user) => {
+                  return new User(
+                     user.email,
+                     user.id,
+                     user.role,
+                     user.name,
+                     user.token,
+                     new Date(user.tokenExpirationDate)
+                  );
+               });
+            }),
+            tap((users) => {
+               this.userService.setUsers(users);
+            })
+         );
 
+         
       // return this.http
       //   .get<User[]>(
       //     'https://ng-course-user-book-65f10.firebaseio.com/users.json'

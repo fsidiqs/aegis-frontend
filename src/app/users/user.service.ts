@@ -32,6 +32,10 @@ export class UserService {
   }
 
   getUsers() {
+    // aspiron debugger
+    console.log('aspiron get users debugger');
+    console.log(this.users.slice());
+    // aspiron debugger
     return this.users.slice();
   }
 
