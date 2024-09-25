@@ -9,7 +9,6 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 
 import { HeaderComponent } from './header/header.component';
 import { DropdownDirective } from './shared/dropdown.directive';
-import { ShoppingListService } from './shopping-list/shopping-list.service';
 import { AuthComponent } from './auth/auth.component';
 import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinner.component';
 import { AuthInterceptorService } from './auth/auth-interceptor.service';
@@ -44,7 +43,7 @@ import { UserService } from './users/user.service';
     HttpClientModule,
     AppRoutingModule
   ],
-  providers: [ShoppingListService, UserService,
+  providers: [ UserService,
      {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService,
       multi: true
      }

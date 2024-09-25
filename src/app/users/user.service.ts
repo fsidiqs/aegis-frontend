@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 
 import { Ingredient } from '../shared/ingredient.model';
-import { ShoppingListService } from '../shopping-list/shopping-list.service';
 import { User } from '../auth/user.model';
 
 @Injectable()
@@ -25,7 +24,7 @@ export class UserService {
   // ];
   private users: User[] = [];
 
-  constructor(private slService: ShoppingListService) {}
+  constructor() {}
 
   setUsers(users: User[]) {
     this.users = users;
@@ -40,9 +39,9 @@ export class UserService {
     return this.users[index];
   }
 
-  addIngredientsToShoppingList(ingredients: Ingredient[]) {
-    this.slService.addIngredients(ingredients);
-  }
+  // addIngredientsToShoppingList(ingredients: Ingredient[]) {
+  //   this.slService.addIngredients(ingredients);
+  // }
 
   addUser(user: User) {
     this.users.push(user);
