@@ -5,6 +5,17 @@ import { exhaustMap, map, take, tap } from "rxjs/operators";
 import { UserService } from "../users/user.service";
 import { AuthService } from "../auth/auth.service";
 import { User } from "../auth/user.model";
+import { Organization } from "../organizations/organization.model";
+import { OrganizationService } from "../organizations/organization.service";
+
+export interface OrganizationResponseData {
+   data: {
+      id: string;
+      creatorID: string;
+      name: string;
+      description: string;
+   }[];
+}
 
 export interface UserResponseData {
    data: {
@@ -17,11 +28,13 @@ export interface UserResponseData {
    }[];
 }
 
+
 @Injectable({ providedIn: "root" })
 export class DataStorageService {
    constructor(
       private http: HttpClient,
       private userService: UserService,
+      private organizationService: OrganizationService,
       private authService: AuthService
    ) {}
 
@@ -112,5 +125,78 @@ export class DataStorageService {
       //       this.userService.setUsers(users);
       //     })
       //   )
+   }
+
+
+
+   fetchOrganizations() {
+      return this.http
+         .get<OrganizationResponseData>("http://localhost:8080/consumer/v1/organizations")
+         .pipe(
+            map((organization) => {
+               return organization.data.map((organization) => {
+                  return new Organization(
+                     organization.id,
+                     organization.creatorID,
+                     organization.name,
+                     organization.description
+                  );
+               });
+            }),
+            tap((organization) => {
+               this.organizationService.setOrganizations(organization);
+            })
+         );
+
+      // return this.http
+      //   .get<User[]>(
+      //     'https://ng-course-user-book-65f10.firebaseio.com/users.json'
+      //   )
+      //   .pipe(
+      //     map(users => {
+      //       return users.map(user => {
+      //         return {
+      //           ...user,
+      //           ingredients: user.ingredients ? user.ingredients : []
+      //         };
+      //       });
+      //     }),
+      //     tap(users => {
+      //       this.userService.setUsers(users);
+      //     })
+      //   )
+   }
+
+   deleteOrganization(organizationID: string) {
+      return this.http
+         .delete<OrganizationResponseData>("http://localhost:8080/consumer/v1/organization/" + organizationID)
+         .subscribe(() => {
+            this.fetchUsers().subscribe();
+         });
+   }
+
+   updateOrganization(organizationID: string, name: string, description: string) {
+      return this.http
+         .put<UserResponseData>(
+            "http://localhost:8080/consumer/v1/organization/" + organizationID,
+            {
+               name: name,
+               description: description,
+            }
+         )
+         .subscribe(() => {
+            this.fetchOrganizations().subscribe();
+         });
+   }
+
+   postOrganization(name: string, description: string) {
+      return this.http
+         .post<OrganizationResponseData>("http://localhost:8080/consumer/v1/organization", {
+            name: name,
+            description: description
+         })
+         .subscribe(() => {
+            this.fetchOrganizations().subscribe();
+         });
    }
 }

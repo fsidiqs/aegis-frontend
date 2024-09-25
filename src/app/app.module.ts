@@ -18,6 +18,12 @@ import { UserDetailComponent } from './users/user-detail/user-detail.component';
 import { UserItemComponent } from './users/user-list/user-item/user-item.component';
 import { UserEditComponent } from './users/user-edit/user-edit.component';
 import { UserService } from './users/user.service';
+import { OrganizationsComponent } from './organizations/organizations.component';
+import { OrganizationListComponent } from './organizations/organization-list/organization-list.component';
+import { OrganizationDetailComponent } from './organizations/organization-detail/organization-detail.component';
+import { OrganizationItemComponent } from './organizations/organization-list/organization-item/organization-item.component';
+import { OrganizationService } from './organizations/organization.service';
+import { OrganizationEditComponent } from './organizations/organization-edit/organization-edit.component';
 
 
 @NgModule({
@@ -28,6 +34,11 @@ import { UserService } from './users/user.service';
     UserListComponent,
     UserDetailComponent,
     UserItemComponent,
+    OrganizationsComponent,
+    OrganizationListComponent,
+    OrganizationDetailComponent,
+    OrganizationItemComponent,
+    OrganizationEditComponent,
     // ShoppingListComponent,
     // ShoppingEditComponent,
     DropdownDirective,
@@ -43,7 +54,7 @@ import { UserService } from './users/user.service';
     HttpClientModule,
     AppRoutingModule
   ],
-  providers: [ UserService,
+  providers: [ UserService, OrganizationService,
      {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService,
       multi: true
      }

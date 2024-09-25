@@ -8,6 +8,10 @@ import { UserEditComponent } from "./users/user-edit/user-edit.component";
 import { UserDetailComponent } from "./users/user-detail/user-detail.component";
 import { UsersResolverService } from "./users/users-resolver.service";
 import { UserStartComponent } from "./users/user-start/user-start.component";
+import { OrganizationsComponent } from "./organizations/organizations.component";
+import { OrganizationDetailComponent } from "./organizations/organization-detail/organization-detail.component";
+import { OrganizationsResolverService } from "./organizations/organizations-resolver.service";
+import { OrganizationEditComponent } from "./organizations/organization-edit/organization-edit.component";
 
 const routes: Routes = [
    { path: "", redirectTo: "/users", pathMatch: "full" },
@@ -27,6 +31,25 @@ const routes: Routes = [
             path: ":id/edit",
             component: UserEditComponent,
             resolve: [UsersResolverService],
+         },
+      ],
+   },
+   {
+      path: "organizations",
+      component: OrganizationsComponent,
+      canActivate: [AuthGuard],
+      children: [
+         // { path: "", component: UserStartComponent },
+         { path: "new", component: OrganizationsComponent },
+         {
+            path: ":id",
+            component: OrganizationDetailComponent,
+            resolve: [OrganizationsResolverService],
+         },
+         {
+            path: ":id/edit",
+            component: OrganizationEditComponent,
+            resolve: [OrganizationsResolverService],
          },
       ],
    },
