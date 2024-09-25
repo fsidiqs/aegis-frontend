@@ -1,10 +1,14 @@
-import { Component } from '@angular/core';
+import { Component } from "@angular/core";
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+   selector: "app-root",
+   templateUrl: "./app.component.html",
+   styleUrl: "./app.component.scss",
 })
 export class AppComponent {
-  title = 'aegis-test';
+   loadedFeature: string = "recipe";
+
+   onNavigate(feature: string) {
+      this.loadedFeature = feature;
+   }
 }
