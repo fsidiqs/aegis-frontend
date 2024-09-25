@@ -10,7 +10,7 @@ import { User } from 'src/app/auth/user.model';
 export class UserItemComponent implements OnInit {
   @Input()
   user!: User;
-  @Input() index!: number ;
+  @Input() index!: string ;
 
   ngOnInit() {
   }

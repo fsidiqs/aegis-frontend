@@ -12,7 +12,7 @@ import { UserCreate } from 'src/app/auth/user.model';
   styleUrls: ['./user-edit.component.css']
 })
 export class UserEditComponent implements OnInit {
-  id!: number;
+  id!: string;
   editMode = false;
   userForm!: FormGroup;
 
@@ -25,7 +25,7 @@ export class UserEditComponent implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe((params: Params) => {
-      this.id = +params['id'];
+      this.id = params['id'];
       this.editMode = params['id'] != null;
       this.initForm();
     });
@@ -38,7 +38,7 @@ export class UserEditComponent implements OnInit {
       this.userForm.value['role'],
       this.userForm.value['password']);
     if (this.editMode) {
-      this.userService.updateUser(this.id, this.userForm.value);
+      this.dataStorageService.updateUser(this.id, newUser.email, newUser.name, newUser.role, newUser.password);
     } else {
      
       this.dataStorageService.postUser(newUser.email, newUser.name, newUser.role, newUser.password);
@@ -67,6 +67,7 @@ export class UserEditComponent implements OnInit {
   }
 
   private initForm() {
+    let userID = '';
     let userName = '';
     let userEmail = '';
     let userRole = '';
@@ -74,10 +75,10 @@ export class UserEditComponent implements OnInit {
 
     if (this.editMode) {
       const user = this.userService.getUser(this.id);
+      userID = user.id;
       userName = user.name;
       userEmail = user.email;
       userRole = user.role;
-      
       // if (user['ingredients']) {
       //   for (let ingredient of user.ingredients) {
       //     userIngredients.push(
@@ -91,15 +92,24 @@ export class UserEditComponent implements OnInit {
       //               );
       //   }
       // }
+      this.userForm = new FormGroup({
+        id: new FormControl(userID, Validators.required),
+        name: new FormControl(userName, Validators.required),
+        email: new FormControl(userEmail, Validators.required),
+        role: new FormControl(userRole, Validators.required),
+        // ingredients: userIngredients
+      });
+    } else {
+      this.userForm = new FormGroup({
+        name: new FormControl(userName, Validators.required),
+        email: new FormControl(userEmail, Validators.required),
+        role: new FormControl(userRole, Validators.required),
+        password: new FormControl(userPassword, Validators.required),
+        // ingredients: userIngredients
+      });
     }
 
-    this.userForm = new FormGroup({
-      name: new FormControl(userName, Validators.required),
-      email: new FormControl(userEmail, Validators.required),
-      role: new FormControl(userRole, Validators.required),
-      password: new FormControl(userPassword, Validators.required),
-      // ingredients: userIngredients
-    });
+    
   }
 
   // get ingredientControls() {

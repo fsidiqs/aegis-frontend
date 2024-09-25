@@ -9,7 +9,7 @@
     <app-user-item
       *ngFor="let userEl of users; let i = index"
       [user]="userEl"
-      [index]="i"></app-user-item>
+      [index]="userEl.id"></app-user-item>
   </div>
 </div>
 

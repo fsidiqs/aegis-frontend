@@ -37,6 +37,22 @@ export class DataStorageService {
          });
    }
 
+   updateUser(userID: string, email: string, name: string, role: string, password: string) {
+      return this.http
+         .put<UserResponseData>(
+            "http://localhost:8080/consumer/v1/user/" + userID,
+            {
+               email: email,
+               name: name,
+               role: role,
+               password: password,
+            }
+         )
+         .subscribe(() => {
+            this.fetchUsers().subscribe();
+         });
+   }
+
    postUser(email: string, name: string, role: string, password: string) {
       return this.http
          .post<UserResponseData>("http://localhost:8080/consumer/v1/user", {
@@ -45,6 +61,14 @@ export class DataStorageService {
             role: role,
             password: password,
          })
+         .subscribe(() => {
+            this.fetchUsers().subscribe();
+         });
+   }
+
+   deleteUser(userID: string) {
+      return this.http
+         .delete<UserResponseData>("http://localhost:8080/consumer/v1/user/" + userID)
          .subscribe(() => {
             this.fetchUsers().subscribe();
          });

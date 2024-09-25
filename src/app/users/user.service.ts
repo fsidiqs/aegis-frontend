@@ -41,8 +41,8 @@ export class UserService {
     return this.users.slice();
   }
 
-  getUser(index: number) {
-    return this.users[index];
+  getUser(index: string) {
+    return this.users.find((user) => user.id === index);
   }
 
   // addIngredientsToShoppingList(ingredients: Ingredient[]) {
@@ -60,8 +60,8 @@ export class UserService {
     this.usersChanged.next(this.users.slice());
   }
 
-  deleteUser(index: number) {
-    this.users.splice(index, 1);
+  deleteUser(index: string) {
+    // this.users.splice(index, 1);
     this.usersChanged.next(this.users.slice());
   }
 }

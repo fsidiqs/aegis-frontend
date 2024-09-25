@@ -3,6 +3,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 
 import { UserService } from '../user.service';
 import { User } from 'src/app/auth/user.model';
+import { DataStorageService } from 'src/app/shared/data-storage.service';
 
 @Component({
   selector: 'app-user-detail',
@@ -11,10 +12,11 @@ import { User } from 'src/app/auth/user.model';
 })
 export class UserDetailComponent implements OnInit {
   user!: User;
-  id!: number;
+  id!: string;
 
   constructor(private userService: UserService,
               private route: ActivatedRoute,
+              private dataStorageService: DataStorageService,
               private router: Router) {
   }
 
@@ -22,7 +24,7 @@ export class UserDetailComponent implements OnInit {
     this.route.params
       .subscribe(
         (params: Params) => {
-          this.id = +params['id'];
+          this.id = params['id'];
           this.user = this.userService.getUser(this.id);
         }
       );
@@ -38,7 +40,8 @@ export class UserDetailComponent implements OnInit {
   }
 
   onDeleteUser() {
-    this.userService.deleteUser(this.id);
+    // this.userService.deleteUser(this.id);
+    this.dataStorageService.deleteUser(this.id)
     this.router.navigate(['/users']);
   }
 
