@@ -67,16 +67,18 @@ export class OrganizationEditComponent implements OnInit {
       let organizationName = "";
       let organizationDescription = "";
 
-      const organization = this.organizationService.getOrganization(this.id);
-      organizationName = organization.name;
-      organizationDescription = organization.description;
+      if (this.editMode) {
+         const organization = this.organizationService.getOrganization(this.id);
+         organizationName = organization.name;
+         organizationDescription = organization.description;
+      }
       this.organizationForm = new FormGroup({
          name: new FormControl(organizationName, Validators.required),
          description: new FormControl(
             organizationDescription,
             Validators.required
          ),
-         // ingredients: organizationIngredients
+         // ingredients: userIngredients
       });
    }
 

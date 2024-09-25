@@ -40,7 +40,7 @@ const routes: Routes = [
       canActivate: [AuthGuard],
       children: [
          // { path: "", component: UserStartComponent },
-         { path: "new", component: OrganizationsComponent },
+         { path: "new", component: OrganizationEditComponent },
          {
             path: ":id",
             component: OrganizationDetailComponent,

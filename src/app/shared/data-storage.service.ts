@@ -133,6 +133,7 @@ export class DataStorageService {
          .get<OrganizationResponseData>("http://localhost:8080/consumer/v1/organizations")
          .pipe(
             map((organization) => {
+               
                return organization.data.map((organization) => {
                   return new Organization(
                      organization.id,
@@ -172,7 +173,7 @@ export class DataStorageService {
       return this.http
          .delete<OrganizationResponseData>("http://localhost:8080/consumer/v1/organization/" + organizationID)
          .subscribe(() => {
-            this.fetchUsers().subscribe();
+            this.fetchOrganizations().subscribe();
          });
    }
 
