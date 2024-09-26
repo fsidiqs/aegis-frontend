@@ -1,22 +1,28 @@
 import { Component } from "@angular/core";
 import { NgForm } from "@angular/forms";
-import { AuthResponseData, AuthService } from "./auth.service";
 import { Observable } from "rxjs";
 import { Router } from "@angular/router";
+import { ForgotPasswordService } from "./forgot-password.service";
 
 @Component({
-   selector: "app-auth",
-   templateUrl: "./auth.component.html",
+   selector: "app-forgot-password",
+   templateUrl: "./forgot-password.component.html",
 })
-export class AuthComponent {
-   isLoginMode = true;
+export class ForgotPasswordComponent {
    isLoading = false;
    error: string = "";
 
-   constructor(private authService: AuthService, private router: Router) {}
+   constructor(
+      private forgotPasswordService: ForgotPasswordService,
+      private router: Router
+   ) {}
 
-   onSwitchToForgotPassword() {
-      this.router.navigate(["/forgot-password"]);
+   onSwitchToLogin() {
+      this.router.navigate(["/auth"]);
+   }
+
+   onSwitchToSubmitPassword() {
+      this.router.navigate(["/forgot-password/submit-new-password"]);
    }
 
    onSubmit(form: NgForm) {
@@ -25,23 +31,18 @@ export class AuthComponent {
       }
 
       const email = form.value.email;
-      const password = form.value.password;
-
-      let authObs: Observable<AuthResponseData>;
 
       this.isLoading = true;
-      if (this.isLoginMode) {
-         this.authService.login(email, password).subscribe(
-            (resData) => {
-               this.isLoading = false;
-               this.router.navigate(["/users"]);
-            },
-            (errorMessage) => {
-               this.error = errorMessage;
-               this.isLoading = false;
-            }
-         );
-      } 
+      this.forgotPasswordService.sendForgotPasswordRequest(email).subscribe(
+         (resData) => {
+            this.isLoading = false;
+            this.router.navigate(["/forgot-password/submit-new-password"]);
+         },
+         (errorMessage) => {
+            this.error = errorMessage;
+            this.isLoading = false;
+         }
+      );
       // else {
       //    this.authService.signup(email, password).subscribe(
       //       (resData) => {
@@ -54,7 +55,7 @@ export class AuthComponent {
       //          console.log(errorMessage);
       //          this.error = errorMessage;
       //          this.isLoading = false;
-               
+
       //       }
       //    );
       // }

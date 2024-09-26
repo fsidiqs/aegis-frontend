@@ -11,7 +11,9 @@ import { UserStartComponent } from "./users/user-start/user-start.component";
 import { OrganizationsComponent } from "./organizations/organizations.component";
 import { OrganizationDetailComponent } from "./organizations/organization-detail/organization-detail.component";
 import { OrganizationsResolverService } from "./organizations/organizations-resolver.service";
+import { ForgotPasswordComponent } from "./auth/forgot-password/forgot-password.component";
 import { OrganizationEditComponent } from "./organizations/organization-edit/organization-edit.component";
+import { SubmitPasswordComponent } from "./auth/forgot-password/submit-password/submit-password.component";
 
 const routes: Routes = [
    { path: "", redirectTo: "/users", pathMatch: "full" },
@@ -55,7 +57,8 @@ const routes: Routes = [
    },
    // { path: "shopping-list", component: ShoppingListComponent },
    { path: "auth", component: AuthComponent },
-
+   { path: "forgot-password", component: ForgotPasswordComponent },
+   { path: "forgot-password/submit-new-password", component: SubmitPasswordComponent },
 ];
 
 @NgModule({

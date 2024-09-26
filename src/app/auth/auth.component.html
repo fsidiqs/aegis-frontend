@@ -23,10 +23,10 @@
             <button class="btn btn-primary" type="submit" [disabled]="!authForm.valid">
                {{ isLoginMode ? "Login" : "Sign Up" }}
             </button>
-            <!-- | -->
-            <!-- <button class="btn btn-primary" (click)="onSwitchMode()">
-               Switch to {{isLoginMode ? 'Sign Up' : 'Login'}}
-            </button> -->
+            |
+            <button class="btn btn-primary" (click)="onSwitchToForgotPassword()">
+               Switch to {{isLoginMode ? 'Forgot Password' : 'Login'}}
+            </button>
          </div>
       </form>
    </div>

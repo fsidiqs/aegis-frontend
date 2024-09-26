@@ -1,22 +1,24 @@
 import { Component } from "@angular/core";
 import { NgForm } from "@angular/forms";
-import { AuthResponseData, AuthService } from "./auth.service";
 import { Observable } from "rxjs";
 import { Router } from "@angular/router";
+import { SubmitPasswordService } from "./submit-password.service";
 
 @Component({
-   selector: "app-auth",
-   templateUrl: "./auth.component.html",
+   selector: "app-submit-password",
+   templateUrl: "./submit-password.component.html",
 })
-export class AuthComponent {
-   isLoginMode = true;
+export class SubmitPasswordComponent {
    isLoading = false;
    error: string = "";
 
-   constructor(private authService: AuthService, private router: Router) {}
+   constructor(
+      private submitPasswordService: SubmitPasswordService,
+      private router: Router
+   ) {}
 
-   onSwitchToForgotPassword() {
-      this.router.navigate(["/forgot-password"]);
+   onSwitchToLogin() {
+      this.router.navigate(["/auth"]);
    }
 
    onSubmit(form: NgForm) {
@@ -26,22 +28,21 @@ export class AuthComponent {
 
       const email = form.value.email;
       const password = form.value.password;
-
-      let authObs: Observable<AuthResponseData>;
+      const otp = form.value.otp;
 
       this.isLoading = true;
-      if (this.isLoginMode) {
-         this.authService.login(email, password).subscribe(
+      this.submitPasswordService
+         .sendNewPasswordRequest(email, password, otp)
+         .subscribe(
             (resData) => {
                this.isLoading = false;
-               this.router.navigate(["/users"]);
+               this.router.navigate(["/auth"]);
             },
             (errorMessage) => {
                this.error = errorMessage;
                this.isLoading = false;
             }
          );
-      } 
       // else {
       //    this.authService.signup(email, password).subscribe(
       //       (resData) => {
@@ -54,7 +55,7 @@ export class AuthComponent {
       //          console.log(errorMessage);
       //          this.error = errorMessage;
       //          this.isLoading = false;
-               
+
       //       }
       //    );
       // }
